@@ -36,12 +36,12 @@ def shop_trip() -> None:
             current_shop = shops[prices.index(min(price for price in prices))]
             print(f"{customer.name} rides to {current_shop.name}\n")
             distance = math.dist(customer.location, current_shop.location)
+            current_shop.print_receipt(customer)
+            print(f"{customer.name} rides home")
             customer.money -= round(
                 current_shop.trip_cost(distance, fuel_price, customer), 2
             )
-            current_shop.print_receipt(customer)
-            print(f"{customer.name} rides home\n"
-                  f"{customer.name} now has {customer.money} dollars\n")
+            print(f"{customer.name} now has {customer.money} dollars\n")
             continue
         print(f"{customer.name} doesn't have enough "
               f"money to make a purchase in any shop")
