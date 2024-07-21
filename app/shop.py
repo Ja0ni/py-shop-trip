@@ -22,6 +22,7 @@ class Shop:
         return customer.car.fuel_price(distance, fuel_price) * 2 + price
 
     def print_receipt(self, customer: Customer) -> None:
+        customer.location = self.location
         print(f"Date: 04/01/2021 12:33:41\n"
               f"Thanks, {customer.name}, for your purchase!\n"
               f"You have bought:")

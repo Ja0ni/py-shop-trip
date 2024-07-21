@@ -9,9 +9,9 @@ from app.car import Car
 def shop_trip() -> None:
     with open("app/config.json", "r") as f:
         data = json.load(f)
-        fuel_price = data["FUEL_PRICE"]
-        customers = data["customers"]
-        shops = [Shop(**shop) for shop in data["shops"]]
+    fuel_price = data["FUEL_PRICE"]
+    customers = data["customers"]
+    shops = [Shop(**shop) for shop in data["shops"]]
     for people in customers:
         customer = Customer(
             people["name"],
@@ -35,11 +35,11 @@ def shop_trip() -> None:
         if ride:
             current_shop = shops[prices.index(min(price for price in prices))]
             print(f"{customer.name} rides to {current_shop.name}\n")
-            current_shop.print_receipt(customer)
             distance = math.dist(customer.location, current_shop.location)
             customer.money -= round(
                 current_shop.trip_cost(distance, fuel_price, customer), 2
             )
+            current_shop.print_receipt(customer)
             print(f"{customer.name} rides home\n"
                   f"{customer.name} now has {customer.money} dollars\n")
             continue
