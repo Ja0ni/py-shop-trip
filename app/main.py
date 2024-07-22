@@ -18,29 +18,24 @@ def shop_trip() -> None:
             people["product_cart"],
             people["location"],
             people["money"],
-            Car(people["car"]["brand"],
-                people["car"]["fuel_consumption"])
+            Car(**people["car"])
         )
         print(f"{customer.name} has {customer.money} dollars")
-        prices = []
+        prices = {}
         for shop in shops:
-            distance = math.dist(customer.location, shop.location)
-            cost = round(shop.trip_cost(distance, fuel_price, customer), 2)
-            prices.append(cost)
+            cost = round(shop.trip_cost(
+                math.dist(customer.location,shop.location),
+                fuel_price,
+                customer
+            ), 2)
+            prices[cost] = shop
             print(f"{customer.name}'s trip to the {shop.name} costs {cost}")
-        ride = False
-        for price in prices:
-            if price <= customer.money:
-                ride = True
-        if ride:
-            current_shop = shops[prices.index(min(price for price in prices))]
-            print(f"{customer.name} rides to {current_shop.name}\n")
-            distance = math.dist(customer.location, current_shop.location)
-            current_shop.print_receipt(customer)
+        cost_of_ride = min([price for price in prices])
+        if cost_of_ride <= customer.money:
+            print(f"{customer.name} rides to {prices[cost_of_ride].name}\n")
+            prices[cost_of_ride].print_receipt(customer)
             print(f"{customer.name} rides home")
-            customer.money -= round(
-                current_shop.trip_cost(distance, fuel_price, customer), 2
-            )
+            customer.money -= cost_of_ride
             print(f"{customer.name} now has {customer.money} dollars\n")
             continue
         print(f"{customer.name} doesn't have enough "
